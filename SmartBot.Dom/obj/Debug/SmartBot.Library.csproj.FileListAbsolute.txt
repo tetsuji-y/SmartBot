@@ -1,0 +1,5 @@
+D:\Dev\SmartBot\SmartBot.Library\bin\Debug\SmartBot.Library.dll
+D:\Dev\SmartBot\SmartBot.Library\bin\Debug\SmartBot.Library.pdb
+D:\Dev\SmartBot\SmartBot.Library\obj\Debug\SmartBot.Library.csprojResolveAssemblyReference.cache
+D:\Dev\SmartBot\SmartBot.Library\obj\Debug\SmartBot.Library.dll
+D:\Dev\SmartBot\SmartBot.Library\obj\Debug\SmartBot.Library.pdb

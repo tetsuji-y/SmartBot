@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
+using SmartBot.Domain.Model.Command;
 
 namespace SmartBot
 {
@@ -22,33 +24,25 @@ namespace SmartBot
             if (ActivityTypes.Message.Equals(activity.Type))
             {
                 var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                var reply = activity.CreateReply($"You sent [{activity.Text}]");
+
+                var command = CommandFactory.Create(activity.Text);
+
+                var result = command.Execute();
+
+                var message = new StringBuilder();
+                message.AppendLine($"Command[{command.CommandText}]");
+                message.AppendLine($"Args[{string.Join(",", command.Arguments)}]");
+                message.AppendLine($"Result[{nameof(result.EndCode)}]");
+                message.AppendLine($"Message[{result.Message}]");
+
+                var reply = activity.CreateReply(message.ToString());
 
                 await connector.Conversations.ReplyToActivityAsync(reply);
-            }
-            else
-            {
-                HandleSystemMessage(activity);
             }
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
 
             return response;
-        }
-
-        private Activity HandleSystemMessage(Activity message)
-        {
-            switch (message.Type)
-            {
-                case ActivityTypes.DeleteUserData:
-                case ActivityTypes.ConversationUpdate:
-                case ActivityTypes.ContactRelationUpdate:
-                case ActivityTypes.Typing:
-                case ActivityTypes.Ping:
-                    break;
-            }
-
-            return null;
         }
     }
 }
